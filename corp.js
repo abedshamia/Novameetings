@@ -12,7 +12,7 @@ function runFunc(err) {
 new WebpackDevServer(webpack(webpackConfig), {
   publicPath: '/static',
   hot: true,
-  host: '0.0.0.0',
+  host: process.env.HOST || '0.0.0.0',
   open: 'chrome',
   after(app, server) {
   },
@@ -20,25 +20,25 @@ new WebpackDevServer(webpack(webpackConfig), {
     // 'Cross-Origin-Embedder-Policy': 'unsafe-none',
     // 'Cross-Origin-Opener-Policy': 'unsafe-none',
   },
-  openPage: 'http://127.0.0.1:9999/index.html',
+  openPage: 'index.html',
   disableHostCheck: true,
   historyApiFallback: true,
   proxy: [{
     path: '/meeting.html',
-    target: 'http://127.0.0.1:9998/'
+    target:`http://${process.env.HOST}:${process.env.PORT}`,
   }]
 }).listen(9999, '0.0.0.0', runFunc);
 
-new WebpackDevServer(webpack(webpackConfig), {
-  publicPath: '/static',
-  hot: true,
-  host: '0.0.0.0',
-  after(app, server) {
-  },
-  headers: {
-    'Cross-Origin-Embedder-Policy': 'require-corp',
-    'Cross-Origin-Opener-Policy': 'same-origin',
-  },
-  disableHostCheck: true,
-  historyApiFallback: true,
-}).listen(9998, '0.0.0.0', runFunc);
+// new WebpackDevServer(webpack(webpackConfig), {
+//   publicPath: '/static',
+//   hot: true,
+//   host: '0.0.0.0',
+//   after(app, server) {
+//   },
+//   headers: {
+//     'Cross-Origin-Embedder-Policy': 'require-corp',
+//     'Cross-Origin-Opener-Policy': 'same-origin',
+//   },
+//   disableHostCheck: true,
+//   historyApiFallback: true,
+// }).listen(9998, '0.0.0.0', runFunc);
